@@ -18,7 +18,7 @@ FOE aims to bring powerful video editing + VFX tools to everyone, without the bl
 
 Clone the repo:
 ```bash
-git clone git@github.com:YOUR_USERNAME/FOE.git
+git clone git@github.com:E3S4/FOE.git
 cd FOE
 ```
 📦 Dependencies
