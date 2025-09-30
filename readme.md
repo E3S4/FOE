@@ -1,40 +1,32 @@
-# 🎬 FOE (Free Open Effects)
+## FOE (Free Open Effects)
+ 
+ A Open Source Video Editing Software Aimed To Provide An After Effects Alternative To Linux Users 
 
-An open-source After Effects alternative built in C++ & Qt — designed to be **lightweight, fast, and hackable**.  
-FOE aims to bring powerful video editing + VFX tools to everyone, without the bloat.
+## Note :
+   This Project Is Under Development So There Is No Confirmed Tests IT may run smoothly on any other distros than arch or hyprland 
 
----
+## My Vision 
+This Project is Just A hobbyist Project im just a teen indian dev with 1 yr of experience in C ++
 
-## ✨ Features (WIP)
-- 🎞 Import, preview, and render videos using **FFmpeg**
-- 🎨 Basic FX: Position, Color Correction, Glow
-- 🖼️ Timeline-based editing with a modern UI
-- ⚡ CPU-based preview for smooth playback
-- 🛠️ Cross-platform (Linux, Windows, macOS)
-
----
-
-## 🚀 Getting Started
-
-Clone the repo:
+## Contribute 
+To Contribute You Can Copy PAste THis Command :
 ```bash
 git clone git@github.com:E3S4/FOE.git
 cd FOE
-```
-📦 Dependencies
+ ```
+## Required Dependencies 
+ Qt6 
+ FFmpeg
+ OpenCv
+ OpenGL
+ G++ or any other compiler (common sense YOu need compiler)
 
-Qt
-
-FFmpeg
-
-OpenGL
-
-Install on Arch:
+## My contacts 
+==> Feel free to contact me through discord :
 ```bash
-sudo pacman -S qt6-base ffmpeg
+noiz.aep
 ```
-
-🧑‍💻 Contributing
-
-Pull requests are welcome!
-If you’ve got cool FX ideas (motion blur, particles, 3D layers) — let’s build them together.
+Or my instagram :
+```
+noiz.aep
+```
