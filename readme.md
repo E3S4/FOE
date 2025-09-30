@@ -20,17 +20,7 @@ Clone the repo:
 ```bash
 git clone git@github.com:YOUR_USERNAME/FOE.git
 cd FOE
-
-Build with qmake:
-
-qmake FOE.pro
-make
-
-
-Run:
-
-./FOE
-
+```
 📦 Dependencies
 
 Qt
@@ -40,8 +30,9 @@ FFmpeg
 OpenGL
 
 Install on Arch:
-
+```bash
 sudo pacman -S qt6-base ffmpeg
+```
 
 🧑‍💻 Contributing
 
