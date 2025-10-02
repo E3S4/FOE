@@ -1,7 +1,7 @@
-#include <QApplication>
 #include "top_panel.h"
-#include <QAction>
 #include <QVBoxLayout>
+#include <QApplication>
+#include <QAction>
 
 TopPanel::TopPanel(QWidget *parent) : QWidget(parent) {
     m_menu = new QMenuBar;
@@ -22,4 +22,5 @@ TopPanel::TopPanel(QWidget *parent) : QWidget(parent) {
     layout->addWidget(m_menu);
     layout->addWidget(m_toolbar);
 }
+
 

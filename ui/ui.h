@@ -1,44 +1,21 @@
 #pragma once
 #include <QMainWindow>
-#include <QDockWidget>
-#include <QTreeWidget>
-#include <QListWidget>
-#include <QTableWidget>
-#include <QSlider>
 #include <QLabel>
-#include <QGraphicsView>
-#include <QMenuBar>
-#include <QToolBar>
-#include <QStatusBar>
-#include <QSplitter>
-
+#include <QPushButton>
+#include "project_assets.h"
+#include "core/framebuffer.h"
+#include "core/play.h"
 class FOEMainWindow : public QMainWindow {
     Q_OBJECT
 public:
-    FOEMainWindow(QWidget *parent = nullptr);
-
-private:
-    // Core preview
-    QGraphicsView *previewView;
-
-    // Panels
-    QTreeWidget   *projectTree;
-    QListWidget   *effectsList;
-    QTableWidget  *propertiesTable;
-    QSlider       *timelineSlider;
-    QListWidget   *audioTracks;
-
-    // Docks
-    QDockWidget *projectDock;
-    QDockWidget *effectsDock;
-    QDockWidget *propertiesDock;
-    QDockWidget *timelineDock;
-    QDockWidget *audioDock;
-
-    void setupDarkTheme();
+    explicit FOEMainWindow(QWidget *parent = nullptr);
     void setupUI();
-    void setupMenu();
-    void setupToolBar();
-    void setupStatusBar();
+private:
+    ProjectAssets *projAssets;
+    QWidget *previewWidget;
+    QLabel *previewArea;
+    QPushButton *playButton;
+    VideoClip currentClip;
+    PlayEngine *playEngine;
 };
 

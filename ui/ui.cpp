@@ -1,52 +1,93 @@
-#include <QApplication>
-#include <QMainWindow>
+#include "ui.h"
+#include "core/import.h"
+#include <QMenuBar>
 #include <QDockWidget>
-#include "top_panel.h"
-#include "effects_panel.h"
-#include "fx_control.h"
-#include "timeline.h"
-#include "render_window.h"
-#include "project_materials.h"
+#include <QFileDialog>
+#include <QVBoxLayout>
+#include <QToolBar>
+#include <QDebug>
 
-int runFOE(int argc, char *argv[])
-{
-    QApplication app(argc, argv);
-    QMainWindow win;
-    win.setWindowTitle("FOE – Fusion Of Effects");
-    win.resize(1600, 900);
+// -------------------- Constructor --------------------
+FOEMainWindow::FOEMainWindow(QWidget *parent) : QMainWindow(parent) {
+    // Initialize PlayEngine
+    playEngine = new PlayEngine(this);
 
-    // Menu/toolbar
-    win.setMenuWidget(new TopPanel());
+    // Setup UI
+    setupUI();
+}
 
-    // Dockable panels
-    auto dockEffects  = new QDockWidget("Effects");
-    dockEffects->setWidget(new EffectsPanel());
-    win.addDockWidget(Qt::LeftDockWidgetArea, dockEffects);
+// -------------------- Setup UI --------------------
+void FOEMainWindow::setupUI() {
+    setWindowTitle("FOE - Fusion of Effects");
+    resize(1200, 800);
 
-    auto dockFxCtrl   = new QDockWidget("Effect Controls");
-    dockFxCtrl->setWidget(new FxControl());
-    win.addDockWidget(Qt::RightDockWidgetArea, dockFxCtrl);
+    // --- Project Assets Dock ---
+    projAssets = new ProjectAssets(this);
+    auto *dockAssets = new QDockWidget("Project Assets", this);
+    dockAssets->setWidget(projAssets);
+    addDockWidget(Qt::LeftDockWidgetArea, dockAssets);
 
-    auto dockAssets   = new QDockWidget("Project Materials");
-    dockAssets->setWidget(new ProjectMaterials());
-    win.addDockWidget(Qt::LeftDockWidgetArea, dockAssets);
+    // --- Central Preview + Play Button ---
+    previewWidget = new QWidget(this);
+    auto *previewLayout = new QVBoxLayout(previewWidget);
 
-    auto dockTimeline = new QDockWidget("Timeline");
-    dockTimeline->setWidget(new Timeline());
-    win.addDockWidget(Qt::BottomDockWidgetArea, dockTimeline);
+    previewArea = new QLabel("Preview Window", this);
+    previewArea->setAlignment(Qt::AlignCenter);
+    previewArea->setStyleSheet("background:black; color:white; min-height:360px;");
 
-    // Central preview window
-    win.setCentralWidget(new RenderWindow());
+    playButton = new QPushButton("▶ Play", this);
 
-    // Style: dark mode with neon accent
-    qApp->setStyleSheet(
-        "QMainWindow { background:#202020; } "
-        "QDockWidget { background:#2b2b2b; color:#ddd; } "
-        "QMenuBar { background:#1e1e1e; color:#fff; } "
-        "QToolBar { background:#1e1e1e; } "
-    );
+    previewLayout->addWidget(previewArea);
+    previewLayout->addWidget(playButton);
+    setCentralWidget(previewWidget);
 
-    win.show();
-    return app.exec();
+    // --- Menu Bar: File → Import ---
+    QMenu *fileMenu = menuBar()->addMenu("File");
+    QAction *importAct = new QAction("Import...", this);
+    fileMenu->addAction(importAct);
+
+    connect(importAct, &QAction::triggered, this, [this]() {
+        QString filePath = QFileDialog::getOpenFileName(this, "Import Media", "",
+            "Videos (*.mp4 *.avi *.mov);;Images (*.png *.jpg *.jpeg);;Audio (*.mp3 *.wav)");
+        if (!filePath.isEmpty()) {
+            QString name = QFileInfo(filePath).baseName();
+            if (filePath.endsWith(".mp4") || filePath.endsWith(".avi") || filePath.endsWith(".mov"))
+                projAssets->addAsset(name, "Video", filePath);
+            else if (filePath.endsWith(".png") || filePath.endsWith(".jpg"))
+                projAssets->addAsset(name, "Image", filePath);
+            else
+                projAssets->addAsset(name, "Audio", filePath);
+        }
+    });
+
+    // --- Asset double-click → Preview ---
+    connect(projAssets, &ProjectAssets::assetDoubleClicked, this, [this](AssetItem asset) {
+        if(asset.type == "Video") {
+            currentClip = importVideo(asset.path);
+            if(!currentClip.frames.empty()) {
+                playEngine->startPreview(currentClip, [this](const QImage &frame){
+                    previewArea->setPixmap(QPixmap::fromImage(frame).scaled(
+                        previewArea->size(),
+                        Qt::KeepAspectRatio,
+                        Qt::SmoothTransformation
+                    ));
+                });
+            }
+        }
+        // TODO: handle Image / Audio
+    });
+
+    // --- Play Button ---
+    connect(playButton, &QPushButton::clicked, this, [this]() {
+        if(!currentClip.frames.empty()) {
+            playEngine->startPreview(currentClip, [this](const QImage &frame){
+                previewArea->setPixmap(QPixmap::fromImage(frame).scaled(
+                    previewArea->size(),
+                    Qt::KeepAspectRatio,
+                    Qt::SmoothTransformation
+                ));
+            });
+        }
+    });
 }
 
