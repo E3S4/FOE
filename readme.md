@@ -1,4 +1,4 @@
-## FOE (Free Open Effects)
+## FOE (Fusion Of Effects)
  
  A Open Source Video Editing Software Aimed To Provide An After Effects Alternative To Linux Users 
 
