@@ -15,10 +15,10 @@ git clone git@github.com:E3S4/FOE.git
 cd FOE
  ```
 ## Required Dependencies 
- Qt6 /n
- FFmpeg /n
- OpenCv /n
- OpenGL /n
+ Qt6                     
+ FFmpeg       
+ OpenCv       
+ OpenGL       
  G++ or any other compiler (common sense YOu need compiler)
 
 ## My contacts 
