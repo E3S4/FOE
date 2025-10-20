@@ -1,5 +1,0 @@
-QMainWindow { background:#1b1b1b; }
-QMenuBar, QToolBar { background:#2b2b2b; color:#eee; }
-QDockWidget { background:#242424; color:#ddd; }
-QTreeWidget, QListView { background:#303030; color:#fff; }
-
